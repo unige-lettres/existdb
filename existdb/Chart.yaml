@@ -1,0 +1,5 @@
+apiVersion: v2
+name: existdb
+description: UNIGE e-Research eXist-db development instance
+type: application
+version: 0.1.0
