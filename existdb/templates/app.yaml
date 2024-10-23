@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "existdb.fullname" . }}
+  labels:
+    {{- include "existdb.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{ include "existdb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "existdb.labels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: secret
+        secret:
+          secretName: {{ include "existdb.fullname" . }}
+      containers:
+      - name: existdb
+        image: registry.gitlab.unige.ch/lettres/services/existdb:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /exist/secret
+          name: secret
+          readOnly: true
+        - mountPath: /exist/data
+          name: data
+        ports:
+        - containerPort: 8080
+          name: http
+        startupProbe:
+          httpGet:
+            port: http
+            path: /exist
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - |
+              set -euo pipefail
+              if ! test -e /exist/data/ADMIN_PASSWORD
+              then
+                client.sh --no-gui --xpath 'sm:passwd("admin", file:read-unicode("/exist/secret/ADMIN_PASSWORD"))'
+                touch /exist/data/ADMIN_PASSWORD
+              fi
+          timeoutSeconds: 10
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.size }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "existdb.fullname" . }}
+  labels:
+    {{- include "existdb.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: http
+  selector:
+    {{- include "existdb.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,9 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+  name: {{ include "existdb.fullname" . }}
+spec:
+  encryptedData:
+    ADMIN_PASSWORD: {{ .Values.encryptedAdminPassword }}
