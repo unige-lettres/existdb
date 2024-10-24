@@ -55,19 +55,4 @@ spec:
       - ReadWriteOnce
       resources:
         requests:
-          storage: {{ .Values.size }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "existdb.fullname" . }}
-  labels:
-    {{- include "existdb.labels" . | nindent 4 }}
-spec:
-  ports:
-  - name: http
-    protocol: TCP
-    port: 80
-    targetPort: http
-  selector:
-    {{- include "existdb.selectorLabels" . | nindent 4 }}
+          storage: {{ .Values.requestedStorage }}
