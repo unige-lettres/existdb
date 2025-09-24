@@ -3,6 +3,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - run: echo ${{ github }}
     - run: echo IMAGE=ghcr.io/"${GITHUB_REPOSITORY,,}" >>"$GITHUB_ENV"
     - uses: redhat-actions/podman-login@v1
       with:
