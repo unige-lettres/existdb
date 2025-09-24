@@ -1,5 +1,0 @@
-The eXist-db instance is available at:
-https://{{ include "existdb.fullname" . }}.{{ .Values.ingressDomain }}
-
-To login as `admin`, use the password obtained with:
-kubectl get secret {{ include "existdb.fullname" . }} --template '{{ "{{" }} .data.ADMIN_PASSWORD }}' | base64 --decode
