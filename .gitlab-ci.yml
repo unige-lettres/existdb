@@ -1,0 +1,18 @@
+build:
+  needs: []
+  image: quay.io/podman/stable
+  variables:
+    STORAGE_DRIVER: vfs
+  script:
+  - podman login
+    --username "$CI_REGISTRY_USER"
+    --password "$CI_REGISTRY_PASSWORD"
+    "$CI_REGISTRY"
+  - podman build
+    --cache-from "$CI_REGISTRY_IMAGE"
+    --cache-to "$CI_REGISTRY_IMAGE"
+    .
+  - |
+    if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"
+    then podman push "$CI_REGISTRY_IMAGE"
+    fi
