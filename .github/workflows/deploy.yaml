@@ -3,7 +3,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - run: env
     - uses: redhat-actions/podman-login@v1
       with:
         registry: ghcr.io/${{ github.repository }}
