@@ -3,9 +3,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - run: echo REGISTRY=ghcr.io/"${GITHUB_REPOSITORY,,}" >>"$GITHUB_ENV"
     - uses: redhat-actions/podman-login@v1
       with:
-        registry: ghcr.io/${{ github.repository }}
+        registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ github.token }}
     - uses: redhat-actions/buildah-build@v2
