@@ -25,9 +25,9 @@ cp --recursive /opt /tmp/context
 cp /tmp/*.xar /tmp/context
 
 IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
-podman build --squash --tag "$IMAGE" /tmp/context
+buildah build --squash --tag "$IMAGE" /tmp/context
 
 DEFAULT_BRANCH="$(curl --silent https://api.github.com/repos/"$GITHUB_REPOSITORY" | jq --raw-output .default_branch)"
 if test "$GITHUB_REF_NAME" = "$DEFAULT_BRANCH"
-then podman push "$IMAGE"
+then buildah push "$IMAGE"
 fi
