@@ -4,11 +4,16 @@ on:
       existdb-version:
         type: string
         default: release
+      package-sources:
+        type: string
+        default: ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: docker://registry.gitlab.unige.ch/lettres/services/existdb:latest
+      with:
+        args: ${{ inputs.package-sources }}
     - run: echo IMAGE=ghcr.io/"${GITHUB_REPOSITORY,,}" >>"$GITHUB_ENV"
     - uses: redhat-actions/podman-login@v1
       with:
