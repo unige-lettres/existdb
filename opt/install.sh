@@ -4,9 +4,11 @@ set -euo pipefail
 rm /exist/autodeploy/*
 
 (
-tail -F /exist/logs/exist.log &
 java org.exist.start.Main client --no-gui --local --file /tmp/opt/install.xq
-kill %1
+RESULT="$?"
+echo "$RESULT"
+cat /exist/logs/exist.log
+test "$RESULT" -eq 0 || exit "$RESULT"
 )
 
 rm /exist/logs/*
