@@ -5,7 +5,7 @@ on:
         type: string
         default: release
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: docker://registry.gitlab.unige.ch/lettres/services/existdb:latest
