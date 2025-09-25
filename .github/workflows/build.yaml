@@ -6,7 +6,7 @@ on:
         default: release
       package-sources:
         type: string
-        default: ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
+        default: ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.tar.gz
 concurrency: build
 jobs:
   build:
