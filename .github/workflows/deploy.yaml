@@ -2,10 +2,7 @@ on: workflow_call
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      GITHUB: ${{ toJSON(github) }}
     steps:
-    - run: echo "$GITHUB"
     - run: echo IMAGE=ghcr.io/"${GITHUB_REPOSITORY,,}" >>"$GITHUB_ENV"
     - uses: redhat-actions/podman-login@v1
       with:
