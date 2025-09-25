@@ -3,13 +3,12 @@ set -euo pipefail
 
 rm /exist/autodeploy/*
 
-(
-java org.exist.start.Main client --no-gui --local --file /tmp/opt/install.xq
-RESULT="$?"
-echo "$RESULT"
-cat /exist/logs/exist.log
-test "$RESULT" -eq 0 || exit "$RESULT"
-)
+if ! java org.exist.start.Main client --no-gui --local --file /tmp/opt/install.xq
+then
+    RESULT="$?"
+    cat /exist/logs/exist.log
+    exit "$RESULT"
+fi
 
 rm /exist/logs/*
 sed -i '/<features>/,/<\/features>/ s/<!--\|-->//g' /exist/etc/conf.xml
