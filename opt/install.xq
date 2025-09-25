@@ -1,6 +1,6 @@
 xquery version "3.1";
 
-declare namespace file = 'http://expath.org/ns/file';
+declare namespace file = 'http://exist-db.org/xquery/file';
 declare namespace repo = 'http://exist-db.org/xquery/repo';
 declare namespace sm = 'http://exist-db.org/xquery/securitymanager';
 declare namespace xmldb = 'http://exist-db.org/xquery/xmldb';
