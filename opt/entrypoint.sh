@@ -22,4 +22,4 @@ do
     INDEX=$(("$INDEX"+1))
 done
 
-cp -r /opt existdb
+cp -r /opt opt

@@ -2,4 +2,5 @@ ARG EXISTDB_VERSION=release
 
 FROM docker.io/existdb/existdb:$EXISTDB_VERSION
 COPY . /tmp
-RUN --mount=type=bind,from=docker.io/library/busybox:uclibc,source=/bin,target=/bin ["/tmp/install.sh"]
+RUN --mount=type=bind,from=docker.io/library/busybox:uclibc,source=/bin,target=/bin
+    /tmp/opt/install.sh && rm -r /tmp/*
