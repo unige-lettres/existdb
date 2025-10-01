@@ -20,7 +20,8 @@ jobs:
         password: ${{ github.token }}
     - uses: redhat-actions/buildah-build@v2
       with:
-        containerfiles: opt/Containerfile
+        context: https://gitlab.unige.ch/lettres/services/existdb.git
+        containerfiles: Containerfile
         build-args: |
           EXISTDB_VERSION=${{ inputs.existdb-version }}
           PACKAGE_SOURCES=${{ inputs.package-sources }}
