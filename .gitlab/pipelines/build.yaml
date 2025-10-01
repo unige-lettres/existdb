@@ -26,8 +26,7 @@ build:
     --tag "$CI_REGISTRY_IMAGE"
     --build-arg EXISTDB_VERSION
     --build-arg PACKAGE_SOURCES
-    --file https://gitlab.unige.ch/lettres/services/existdb/-/raw/main/opt/Containerfile
-    .
+    https://gitlab.unige.ch/lettres/services/existdb.git
   - |
     if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"
     then podman push "$CI_REGISTRY_IMAGE"
