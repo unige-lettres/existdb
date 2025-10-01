@@ -1,3 +1,34 @@
+spec:
+  inputs:
+    existdb-version:
+      type: string
+      default: release
+    package-sources:
+      type: string
+      default: $CI_PROJECT_URL/-/archive/$CI_COMMIT_SHA/archive.tar.bz2
+---
 build:
-  image: registry.gitlab.unige.ch/lettres/services/existdb:latest
-  script: /opt/entrypoint.sh "$CI_PROJECT_URL"/-/archive/"$CI_COMMIT_SHA"/archive.tar.bz2
+  needs: []
+  image: quay.io/podman/stable
+  variables:
+    GIT_STRATEGY: empty
+    STORAGE_DRIVER: vfs
+    EXISTDB_VERSION: $[[ inputs.existdb-version | expand_vars ]]
+    PACKAGE_SOURCES: $[[ inputs.package-sources | expand_vars ]]
+  script:
+  - podman login
+    --username "$CI_REGISTRY_USER"
+    --password "$CI_REGISTRY_PASSWORD"
+    "$CI_REGISTRY"
+  - podman build
+    --cache-from "$CI_REGISTRY_IMAGE"
+    --cache-to "$CI_REGISTRY_IMAGE"
+    --tag "$CI_REGISTRY_IMAGE"
+    --build-arg EXISTDB_VERSION
+    --build-arg PACKAGE_SOURCES
+    --file https://gitlab.unige.ch/lettres/services/existdb/-/raw/main/opt/Containerfile
+    .
+  - |
+    if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"
+    then podman push "$CI_REGISTRY_IMAGE"
+    fi
