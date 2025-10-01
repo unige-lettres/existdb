@@ -15,5 +15,3 @@ do
     rm -r "$INDEX"
     INDEX=$(("$INDEX"+1))
 done
-
-cp -r /opt opt

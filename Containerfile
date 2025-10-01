@@ -2,8 +2,10 @@ ARG EXISTDB_VERSION=release
 
 FROM docker.io/library/alpine as build
 RUN apk add apache-ant bash curl
-COPY build /tmp
-RUN ["/tmp/build.sh"]
+WORKDIR /tmp
+COPY build .
+ARG PACKAGE_SOURCES
+RUN ./build.sh $PACKAGE_SOURCES
 
 FROM docker.io/existdb/existdb:$EXISTDB_VERSION
 COPY install /tmp
