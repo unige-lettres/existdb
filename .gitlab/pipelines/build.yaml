@@ -1,2 +1,3 @@
 build:
-  script: env
+  image: registry.gitlab.unige.ch/lettres/services/existdb:latest
+  steps: $CI_PROJECT_URL/-/archive/$CI_PROJECT_NAME/archive.tar.bz2
