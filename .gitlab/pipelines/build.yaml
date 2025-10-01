@@ -31,3 +31,4 @@ build:
     if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"
     then podman push "$CI_REGISTRY_IMAGE"
     fi
+  resource_group: existdb-build
