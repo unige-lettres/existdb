@@ -21,8 +21,4 @@ return $path
 ,
 
 for $user in sm:find-users-by-username('')
-return $user
-
-,
-
-sm:set-account-enabled('admin', false())
+return sm:set-account-enabled($user, false())
