@@ -1,6 +1,6 @@
 ARG EXISTDB_VERSION=release
 
-FROM docker.io/library/alpine as build
+FROM docker.io/library/alpine AS build
 RUN apk add apache-ant bash curl
 WORKDIR /tmp
 COPY build .

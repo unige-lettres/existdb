@@ -11,7 +11,7 @@ Add `.gitlab-ci.yml` to your repo with:
 ```yaml
 build:
   trigger:
-    strategy: depend  # use `mirror` with GitLab 18.2
+    strategy: mirror  # use `depend` with GitLab older than 18.2
     include:
     - project: lettres/services/existdb
       file: .gitlab/pipelines/build.yaml

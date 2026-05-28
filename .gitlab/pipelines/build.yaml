@@ -27,8 +27,7 @@ build:
     --build-arg EXISTDB_VERSION
     --build-arg PACKAGE_SOURCES
     https://gitlab.unige.ch/lettres/services/existdb.git
-  - |
-    if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"
-    then podman push "$CI_REGISTRY_IMAGE"
+  - if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH";
+    then podman push "$CI_REGISTRY_IMAGE";
     fi
   resource_group: existdb-build
