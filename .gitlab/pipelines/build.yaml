@@ -6,6 +6,9 @@ spec:
     package-sources:
       type: string
       default: $CI_PROJECT_URL/-/archive/$CI_COMMIT_SHA/archive.tar.bz2
+    restart-url:
+      type: string
+      default: https://autoroll.letruks1.unige.ch/check_image
 ---
 build:
   needs: []
@@ -15,12 +18,14 @@ build:
     STORAGE_DRIVER: vfs
     EXISTDB_VERSION: $[[ inputs.existdb-version | expand_vars ]]
     PACKAGE_SOURCES: $[[ inputs.package-sources | expand_vars ]]
+    RESTART_URL: $[[ inputs.restart-url | expand_vars ]]
   script:
   - podman login
     --username "$CI_REGISTRY_USER"
     --password "$CI_REGISTRY_PASSWORD"
     "$CI_REGISTRY"
   - podman build
+    --storage-driver=vfs
     --cache-from "$CI_REGISTRY_IMAGE"
     --cache-to "$CI_REGISTRY_IMAGE"
     --tag "$CI_REGISTRY_IMAGE"
@@ -28,6 +33,10 @@ build:
     --build-arg PACKAGE_SOURCES
     https://gitlab.unige.ch/lettres/services/existdb.git
   - if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH";
-    then podman push "$CI_REGISTRY_IMAGE";
+    then
+      podman push "$CI_REGISTRY_IMAGE" &&
+      if test -n "$RESTART_URL";
+      then curl --fail-with-body --request POST --url-query reference="$CI_REGISTRY_IMAGE" "$RESTART_URL";
+      fi
     fi
   resource_group: existdb-build
