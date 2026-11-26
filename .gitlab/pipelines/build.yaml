@@ -8,7 +8,7 @@ spec:
       default: $CI_PROJECT_URL/-/archive/$CI_COMMIT_SHA/archive.tar.bz2
     restart-url:
       type: string
-      default: https://autoroll.letruks1.unige.ch/check_image
+      default: ''
 ---
 build:
   needs: []
