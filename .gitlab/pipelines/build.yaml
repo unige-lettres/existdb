@@ -35,8 +35,6 @@ build:
   - if test "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH";
     then
       podman push "$CI_REGISTRY_IMAGE" &&
-      if test -n "$RESTART_URL";
-      then curl --fail-with-body --request POST --url-query reference="$CI_REGISTRY_IMAGE" "$RESTART_URL";
-      fi
+      (test -z "$RESTART_URL" || curl --fail-with-body --request POST --url-query reference="$CI_REGISTRY_IMAGE" "$RESTART_URL");
     fi
   resource_group: existdb-build
